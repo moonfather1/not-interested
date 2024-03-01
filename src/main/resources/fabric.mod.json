@@ -1,0 +1,39 @@
+{
+	"schemaVersion": 1,
+	"id": "not_interested",
+	"version": "${version}",
+	"name": "Not interested!",
+	"description": "This mod adds a button onto a wandering trader's trade screen - a button you can use to tell him to bugger off.",
+	"authors": ["MoonFather"],
+	"contact": {
+		"homepage": "https://modrinth.com/mod/not-interested",
+		"sources": "https://github.com/moonfather1/not-interested"
+	},
+	"license": "MIT",
+	"icon": "assets/not_interested/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"moonfather.not_interested.NotInterested"
+		],
+		"client": [
+			"moonfather.not_interested.NotInterestedClient"
+		]
+	},
+	"mixins": [
+		"not_interested.mixins.json",
+		{
+			"config": "not_interested.client.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.15.7",
+		"minecraft": "~1.20.4",
+		"java": ">=17",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}

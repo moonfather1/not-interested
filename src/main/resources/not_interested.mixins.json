@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "package": "moonfather.not_interested.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "MenuAccessor",
+    "MenuOpenAndCloseEvents"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+	}
+}

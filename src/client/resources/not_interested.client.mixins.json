@@ -1,0 +1,11 @@
+{
+	"required": true,
+	"package": "moonfather.not_interested.mixin.client",
+	"compatibilityLevel": "JAVA_17",
+	"client": [
+		"ButtonAddingMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}
