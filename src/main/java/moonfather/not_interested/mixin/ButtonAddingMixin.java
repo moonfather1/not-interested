@@ -29,20 +29,13 @@ public abstract class ButtonAddingMixin extends AbstractContainerScreen<Merchant
             int sx = (this.width - this.imageWidth) / 2;
             int sy = (this.height - this.imageHeight) / 2;
             graphics.blit(EXPANSION_LOCATION, sx, sy + 160, 0, 0.0F, 0.0F, 99, 30, 128, 128);
+            if (this.firstRender)
+            {
+                this.addRenderableWidget(new BuggerOffButton(sx + 4, sy + 160 + 3, this));
+                this.firstRender = false;
+            }
         }
     }
     private static final ResourceLocation EXPANSION_LOCATION = new ResourceLocation("not_interested", "textures/gui/frame1.png");
-
-
-
-    @Inject(method = "init()V", at = @At("TAIL"))
-    private void addButton(CallbackInfo ci)
-    {
-        if (WindowOriginHandler.isButtonVisible())
-        {
-            int sx = (this.width - this.imageWidth) / 2;
-            int sy = (this.height - this.imageHeight) / 2;
-            this.addRenderableWidget(new BuggerOffButton(sx + 4, sy + 160 + 3, this));
-        }
-    }
+    private boolean firstRender = true; // instead of mixin in init() which won't work since 1.20.5, we use this flag and add button on first render.
 }

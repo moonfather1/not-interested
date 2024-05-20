@@ -2,8 +2,11 @@ package moonfather.not_interested.messaging.client_to_server;
 
 import moonfather.not_interested.ModNotInterested;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
@@ -11,23 +14,21 @@ import java.util.Optional;
 // handler knows which server player corresponds to sender, it's all we need.
 public record BuggerOffMessage(int unused) implements CustomPacketPayload
 {
-    public static final ResourceLocation ID = new ResourceLocation(ModNotInterested.MODID, "message_button_pressed");
+    private static final ResourceLocation ID = new ResourceLocation(ModNotInterested.MODID, "message_button_pressed");
+    public static final Type<BuggerOffMessage> TYPE = new Type<>(ID);
 
 
-
-    public BuggerOffMessage(final FriendlyByteBuf buffer)
-    {
-        this(buffer.readInt());
-    }
 
     @Override
-    public void write(final FriendlyByteBuf buffer) {
-        buffer.writeInt(unused);
+    public Type<? extends CustomPacketPayload> type()
+    {
+        return TYPE;
     }
 
-    @Override
-    public ResourceLocation id()
-    {
-        return ID;
-    }
+    public static final StreamCodec<RegistryFriendlyByteBuf, BuggerOffMessage> STREAM_CODEC = StreamCodec.of(
+            BuggerOffMessage::encode,
+            BuggerOffMessage::decode);
+
+    private static void encode(RegistryFriendlyByteBuf buf, BuggerOffMessage msg) { buf.writeInt(msg.unused); }
+    private static @NotNull BuggerOffMessage decode(RegistryFriendlyByteBuf buf) { return new BuggerOffMessage(buf.readInt()); }
 }

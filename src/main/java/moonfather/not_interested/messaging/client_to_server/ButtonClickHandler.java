@@ -9,35 +9,30 @@ import net.minecraft.world.entity.npc.WanderingTrader;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MerchantMenu;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.neoforged.neoforge.network.handling.PlayPayloadContext;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 // message handling, server-side. receives button click message on the server.
 public class ButtonClickHandler
 {
-    private static final ButtonClickHandler INSTANCE = new ButtonClickHandler();
-
-    public static ButtonClickHandler getInstance() { return INSTANCE; }
-
-
-    public void handleClientRequest(final BuggerOffMessage msg, final PlayPayloadContext context)
+    public static void handleClientRequest(final BuggerOffMessage msg, final IPayloadContext context) //void handle(T payload, IPayloadContext context);
     {
-        context.workHandler().submitAsync(
-            () -> {
-                if (context.player().isPresent() && context.player().get() instanceof ServerPlayer sp) // the client that sent this packet
-                {
-                    sendTheTraderAway(sp);
-                }
+        // as of 1.20.6, things are by default handled on main thread
+        try
+        {
+            if (context.player() instanceof ServerPlayer sp) // the client that sent this packet
+            {
+                sendTheTraderAway(sp);
             }
-        )
-        .exceptionally(
-            e -> {
-                context.packetHandler().disconnect(Component.literal("Networking error in NI mod\n" + e.getMessage()));
-                return null;
-            }
-        );
+        }
+        catch (Exception e)
+        {
+            context.disconnect(Component.literal("Networking error in NI mod\n" + e.getMessage()));
+        }
     }
 
-    private void sendTheTraderAway(ServerPlayer player)
+
+
+    private static void sendTheTraderAway(ServerPlayer player)
     {
         if (player.containerMenu instanceof MerchantMenu menu)
         {

@@ -8,6 +8,6 @@ public class ClientToServerSender
     public static void sendButtonClickToServer()
     {
         BuggerOffMessage message = new BuggerOffMessage(-1);
-        PacketDistributor.SERVER.noArg().send(message);
+        PacketDistributor.sendToServer(message);
     }
 }

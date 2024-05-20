@@ -6,10 +6,10 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.npc.WanderingTrader;
 import net.minecraft.world.inventory.MerchantMenu;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.player.PlayerContainerEvent;
 
-@Mod.EventBusSubscriber
+@EventBusSubscriber
 public class MenuWatcher
 {
     /// server side event.
