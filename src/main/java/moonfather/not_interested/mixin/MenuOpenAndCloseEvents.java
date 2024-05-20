@@ -1,7 +1,7 @@
 package moonfather.not_interested.mixin;
 
 import com.mojang.authlib.GameProfile;
-import moonfather.not_interested.ServerToClientMessaging;
+import moonfather.not_interested.messaging_s2c.ServerToClientMessaging;
 import net.minecraft.entity.passive.WanderingTraderEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.MerchantScreenHandler;

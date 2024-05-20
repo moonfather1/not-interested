@@ -1,18 +1,16 @@
 package moonfather.not_interested;
 
-import net.fabricmc.fabric.api.networking.v1.PacketSender;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayNetworkHandler;
-import net.minecraft.network.PacketByteBuf;
+import moonfather.not_interested.messaging_s2c.ServerToClientMessaging;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 
 // client-side class that receives and handles server-to-client messages
 // controls whether we draw a button
 // normally these handlers have a redirection to main thread on client side but in this case, no need.
 public class WindowOriginMessageHandler
 {
-    public static void handleMessage(MinecraftClient client, ClientPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender)
+    public static void handleMessage2(ServerToClientMessaging.S2CPayload msg, ClientPlayNetworking.Context context)
     {
-        buttonVisible = buf.readInt() == 1;
+        buttonVisible = msg.getValue();
     }
 
     private static boolean buttonVisible = false;

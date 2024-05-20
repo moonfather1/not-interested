@@ -19,8 +19,6 @@ public abstract class ButtonAddingMixin extends HandledScreen<MerchantScreenHand
 {
     private ButtonAddingMixin(MerchantScreenHandler p_97741_, PlayerInventory p_97742_, Text p_97743_) { super(p_97741_, p_97742_, p_97743_); }
 
-
-
     @Inject(method = "drawBackground(Lnet/minecraft/client/gui/DrawContext;FII)V", at = @At(value = "INVOKE", target = "net/minecraft/client/gui/DrawContext.drawTexture (Lnet/minecraft/util/Identifier;IIIFFIIII)V", shift = At.Shift.AFTER))
     private void renderExpansion(DrawContext context, float delta, int mouseX, int mouseY, CallbackInfo ci)
     {
@@ -29,20 +27,28 @@ public abstract class ButtonAddingMixin extends HandledScreen<MerchantScreenHand
             int sx = (this.width - this.backgroundWidth) / 2;
             int sy = (this.height - this.backgroundHeight) / 2;
             context.drawTexture(EXPANSION_LOCATION, sx, sy + 160, 0, 0.0F, 0.0F, 99, 30, 128, 128);
+            if (this.firstRender)
+            {
+                this.addDrawableChild(new BuggerOffButton(sx + 4, sy + 160 + 3, this));
+                this.firstRender = false;
+            }
         }
     }
+
     private static final Identifier EXPANSION_LOCATION = new Identifier("not_interested", "textures/gui/frame1.png");
 
 
+    private boolean firstRender = true; // instead of mixin in init() which won't work since 1.20.5, we use this flag.
 
-    @Inject(method = "init()V", at = @At("TAIL"))
-    private void addButton(CallbackInfo ci)
-    {
-        if (WindowOriginMessageHandler.isButtonVisible())
-        {
-            int sx = (this.width - this.backgroundWidth) / 2;
-            int sy = (this.height - this.backgroundHeight) / 2;
-            this.addDrawableChild(new BuggerOffButton(sx + 4, sy + 160 + 3, this));
-        }
-    }
+//    @Inject(method = "init()V", at = @At("TAIL"))
+//    private void addButton(CallbackInfo ci)
+//    {
+//        // as of 1.20.5, server2client message comes AFTER init() and we can't check WindowOriginMessageHandler.isButtonVisible() here.
+//        if (WindowOriginMessageHandler.isButtonVisible())
+//        {
+//        int sx = (this.width - this.backgroundWidth) / 2;
+//        int sy = (this.height - this.backgroundHeight) / 2;
+//        this.addDrawableChild(new BuggerOffButton(sx + 4 -20, sy + 160 + 3 -0, this));
+//        }
+//    }
 }

@@ -2,9 +2,11 @@ package moonfather.not_interested;
 
 import moonfather.not_interested.mixin.MenuAccessor;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.passive.WanderingTraderEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.network.packet.CustomPayload;
 import net.minecraft.predicate.entity.EntityPredicates;
 import net.minecraft.screen.MerchantScreenHandler;
 import net.minecraft.server.MinecraftServer;
@@ -20,8 +22,9 @@ public class ButtonMessageHandler
     // here we respond to a button click. this is on server-side.
 
 
-    public static void handleMessage(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender)
+    public static void handleMessage2(CustomPayload msg, ServerPlayNetworking.Context context)
     {
+        ServerPlayerEntity player = context.player();
         ThreadExecutor<ServerTask> executor = player.getServerWorld().getServer();
         if (! executor.isOnThread())
         {
