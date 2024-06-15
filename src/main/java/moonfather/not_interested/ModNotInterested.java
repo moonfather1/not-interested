@@ -19,7 +19,7 @@ public class ModNotInterested
     public ModNotInterested(IEventBus modEventBus)
     {
         modEventBus.addListener(this::commonSetup);
-		modEventBus.addListener(this::registerPayloads);
+        modEventBus.addListener(this::registerPayloads);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event)

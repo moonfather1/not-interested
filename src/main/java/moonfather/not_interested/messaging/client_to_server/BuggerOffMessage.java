@@ -14,7 +14,7 @@ import java.util.Optional;
 // handler knows which server player corresponds to sender, it's all we need.
 public record BuggerOffMessage(int unused) implements CustomPacketPayload
 {
-    private static final ResourceLocation ID = new ResourceLocation(ModNotInterested.MODID, "message_button_pressed");
+    private static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(ModNotInterested.MODID, "message_button_pressed");
     public static final Type<BuggerOffMessage> TYPE = new Type<>(ID);
 
 

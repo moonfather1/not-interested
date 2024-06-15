@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 /// server to client message. value carried is 1 if we clicked a WT and 0 if it's some other window.
 public record WindowOriginMessage(int flag) implements CustomPacketPayload
 {
-    private static final ResourceLocation ID = new ResourceLocation(ModNotInterested.MODID, "message_trader_type");
+    private static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(ModNotInterested.MODID, "message_trader_type");
     public static final Type<WindowOriginMessage> TYPE = new Type<>(ID);
 
 
