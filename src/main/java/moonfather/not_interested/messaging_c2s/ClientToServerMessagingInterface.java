@@ -9,7 +9,7 @@ import net.minecraft.util.Identifier;
 
 public class ClientToServerMessagingInterface
 {
-    private static final Identifier C2S_NI_PACKET_ID = new Identifier(NotInterested.MODID, "packet_button");
+    private static final Identifier C2S_NI_PACKET_ID = Identifier.of(NotInterested.MODID, "packet_button");
     public static final CustomPayload.Id<C2SPayload> PACKET_ID = new CustomPayload.Id<>(C2S_NI_PACKET_ID);
     public static final PacketCodec<RegistryByteBuf, C2SPayload> PACKET_CODEC = PacketCodec.of(C2SPayload::write, C2SPayload::new);
 

@@ -18,7 +18,7 @@ public class ServerToClientMessaging
     }
 
 
-    private static final Identifier S2C_NI_PACKET_ID = new Identifier(NotInterested.MODID, "packet_trader");
+    private static final Identifier S2C_NI_PACKET_ID = Identifier.of(NotInterested.MODID, "packet_trader");
     public static final CustomPayload.Id<S2CPayload> PACKET_ID = new CustomPayload.Id<>(S2C_NI_PACKET_ID);
     public static final PacketCodec<RegistryByteBuf, S2CPayload> PACKET_CODEC = PacketCodec.of(S2CPayload::write, S2CPayload::new);
 

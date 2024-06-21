@@ -35,7 +35,7 @@ public abstract class ButtonAddingMixin extends HandledScreen<MerchantScreenHand
         }
     }
 
-    private static final Identifier EXPANSION_LOCATION = new Identifier("not_interested", "textures/gui/frame1.png");
+    private static final Identifier EXPANSION_LOCATION = Identifier.of("not_interested", "textures/gui/frame1.png");
 
 
     private boolean firstRender = true; // instead of mixin in init() which won't work since 1.20.5, we use this flag.
