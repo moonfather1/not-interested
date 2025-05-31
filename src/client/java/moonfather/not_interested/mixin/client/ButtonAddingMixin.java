@@ -23,14 +23,14 @@ public abstract class ButtonAddingMixin extends HandledScreen<MerchantScreenHand
     private ButtonAddingMixin(MerchantScreenHandler p_97741_, PlayerInventory p_97742_, Text p_97743_) { super(p_97741_, p_97742_, p_97743_); }
 
     //@Inject(method = "drawBackground(Lnet/minecraft/client/gui/DrawContext;FII)V", at = @At(value = "INVOKE", target = "net/minecraft/client/gui/DrawContext.drawTexture (Lnet/minecraft/util/Identifier;IIIFFIIII)V", shift = At.Shift.AFTER))
-    @Inject(method = "drawBackground(Lnet/minecraft/client/gui/DrawContext;FII)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawTexture(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/util/Identifier;IIFFIIII)V", shift = At.Shift.AFTER))
+    @Inject(method = "drawBackground(Lnet/minecraft/client/gui/DrawContext;FII)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawTexture(Ljava/util/function/Function;Lnet/minecraft/util/Identifier;IIFFIIII)V", shift = At.Shift.AFTER))
     private void renderExpansion(DrawContext context, float delta, int mouseX, int mouseY, CallbackInfo ci)
     {
         if (WindowOriginMessageHandler.isButtonVisible())
         {
             int sx = (this.width - this.backgroundWidth) / 2;
             int sy = (this.height - this.backgroundHeight) / 2;
-            context.drawTexture(RenderPipelines.GUI_TEXTURED, EXPANSION_LOCATION, sx, sy + 160, 0.0F, 0.0F, 99, 30, 128, 128);
+            context.drawTexture(RenderLayer::getGuiTextured, EXPANSION_LOCATION, sx, sy + 160, 0.0F, 0.0F, 99, 30, 128, 128);
             if (this.firstRender)
             {
                 this.addDrawableChild(new BuggerOffButton(sx + 4, sy + 160 + 3, this));
