@@ -25,7 +25,7 @@ public class ButtonMessageHandler
     public static void handleMessage2(CustomPayload msg, ServerPlayNetworking.Context context)
     {
         ServerPlayerEntity player = context.player();
-        ThreadExecutor<ServerTask> executor = player.getServerWorld().getServer();
+        ThreadExecutor<ServerTask> executor = player.getServer();
         if (! executor.isOnThread())
         {
             executor.execute(() -> sendTheTraderAway(player));

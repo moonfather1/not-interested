@@ -20,7 +20,7 @@ import java.util.OptionalInt;
 @Mixin(ServerPlayerEntity.class)
 public abstract class MenuOpenAndCloseEvents extends PlayerEntity
 {
-    private MenuOpenAndCloseEvents(World world, BlockPos pos, float yaw, GameProfile gameProfile) { super(world, pos, yaw, gameProfile); }
+    private MenuOpenAndCloseEvents(World world, GameProfile gameProfile) { super(world, gameProfile); }
 
     // in this class, server-side, we react to guis being opened and closed and set the flag on client side whether we're dealing with a WT or not.
 
