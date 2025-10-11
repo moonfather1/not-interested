@@ -3,7 +3,7 @@
 	"id": "not_interested",
 	"version": "${version}",
 	"name": "Not interested!",
-	"description": "This mod adds a button onto a wandering trader's trade screen - a button you can use to tell him to bugger off.",
+        "description": "This mod adds a button onto a wandering trader's trade screen - a button you can use to tell him to bugger off.",
 	"authors": ["MoonFather"],
 	"contact": {
 		"homepage": "https://modrinth.com/mod/not-interested",
@@ -28,8 +28,8 @@
 		}
 	],
 	"depends": {
-		"fabricloader": ">=0.16.14",
-		"minecraft": ">=1.21.5",
+		"fabricloader": ">=0.17.3",
+		"minecraft": "~1.21.10",
 		"java": ">=21",
 		"fabric-api": "*"
 	},
@@ -37,4 +37,3 @@
 		"another-mod": "*"
 	}
 }
-

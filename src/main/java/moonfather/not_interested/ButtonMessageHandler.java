@@ -25,7 +25,7 @@ public class ButtonMessageHandler
     public static void handleMessage2(CustomPayload msg, ServerPlayNetworking.Context context)
     {
         ServerPlayerEntity player = context.player();
-        ThreadExecutor<ServerTask> executor = player.getServer();
+        ThreadExecutor<ServerTask> executor = context.server();
         if (! executor.isOnThread())
         {
             executor.execute(() -> sendTheTraderAway(player));
@@ -48,7 +48,7 @@ public class ButtonMessageHandler
             {
                 // multiplayer? let's see if there is someone in range...
                 BlockPos target = new BlockPos(0, 0, 0);  boolean havePlayerTarget = false;
-                for (PlayerEntity otherPlayer : wt.getWorld().getPlayers()) {
+                for (PlayerEntity otherPlayer : wt.getEntityWorld().getPlayers()) {
                     if (EntityPredicates.EXCEPT_SPECTATOR.test(otherPlayer) && EntityPredicates.VALID_LIVING_ENTITY.test(otherPlayer))
                     {
                         double distance = otherPlayer.distanceTo(player);
@@ -64,9 +64,9 @@ public class ButtonMessageHandler
                 if (! havePlayerTarget)
                 {
                     // single player (or others too far or too close) - have him fade away
-                    int x = wt.getBlockPos().getX()+33*(wt.getWorld().random.nextInt(3)-1); // (-1..1) * 33
-                    int z = wt.getBlockPos().getZ()+33*(wt.getWorld().random.nextInt(3)-1); // (-1..1) * 33
-                    int y = wt.getWorld().getTopY(Heightmap.Type.WORLD_SURFACE, x, z);
+                    int x = wt.getBlockPos().getX()+33*(wt.getEntityWorld().random.nextInt(3)-1); // (-1..1) * 33
+                    int z = wt.getBlockPos().getZ()+33*(wt.getEntityWorld().random.nextInt(3)-1); // (-1..1) * 33
+                    int y = wt.getEntityWorld().getTopY(Heightmap.Type.WORLD_SURFACE, x, z);
                     target = new BlockPos(x, y, z);
                 }
                 wt.setDespawnDelay(10 * 20);
