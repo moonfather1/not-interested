@@ -34,19 +34,20 @@ public class ButtonClickHandler
 
     private static void sendTheTraderAway(ServerPlayer player)
     {
+        assert player != null;
         if (player.containerMenu instanceof MerchantMenu menu)
         {
-            assert player != null;
-            player.closeContainer();
             if (((MenuAccessor)menu).getTraderField() instanceof WanderingTrader wt)
             {
+                player.closeContainer();
                 // multiplayer? let's see if there is someone in range...
                 BlockPos target = BlockPos.ZERO;  boolean havePlayerTarget = false;
-                for(Player otherPlayer : wt.level().players()) {
+                for (Player otherPlayer : wt.level().players())
+                {
                     if (EntitySelector.NO_SPECTATORS.test(otherPlayer) && EntitySelector.LIVING_ENTITY_STILL_ALIVE.test(otherPlayer))
                     {
                         double distance = otherPlayer.distanceToSqr(player);
-                        if (distance > 40.0D && distance < 200)
+                        if (distance > 40.0D && distance < 240)
                         {
                             target = otherPlayer.blockPosition();
                             havePlayerTarget = true;
@@ -65,7 +66,7 @@ public class ButtonClickHandler
                 }
                 wt.setDespawnDelay(10 * 20);
                 wt.setWanderTarget(target);
-                wt.restrictTo(target, 8);
+                wt.setHomeTo(target, 8);
             }
             //else
             //{

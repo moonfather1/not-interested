@@ -8,7 +8,6 @@ import net.minecraft.world.inventory.MerchantMenu;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 
-@OnlyIn(Dist.CLIENT)
 public class BuggerOffButton extends Button
 {
     public BuggerOffButton(int left, int top, AbstractContainerScreen<MerchantMenu> parent)

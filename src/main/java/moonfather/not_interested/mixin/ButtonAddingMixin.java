@@ -5,6 +5,7 @@ import moonfather.not_interested.messaging.server_to_client.WindowOriginHandler;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.MerchantScreen;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -21,14 +22,15 @@ public abstract class ButtonAddingMixin extends AbstractContainerScreen<Merchant
 
 
 
-    @Inject(method = "renderBg(Lnet/minecraft/client/gui/GuiGraphics;FII)V", at = @At(value = "INVOKE", target = "net/minecraft/client/gui/GuiGraphics.blit (Lnet/minecraft/resources/ResourceLocation;IIIFFIIII)V", shift = At.Shift.AFTER))
+    //@Inject(method = "renderBg(Lnet/minecraft/client/gui/GuiGraphics;FII)V", at = @At(value = "INVOKE", target = "net/minecraft/client/gui/GuiGraphics.blit (Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/resources/ResourceLocation;IIFFIIII)V", shift = At.Shift.AFTER))
+    @Inject(method = "renderBg(Lnet/minecraft/client/gui/GuiGraphics;FII)V", at = @At(value = "RETURN"))
     private void renderExpansion(GuiGraphics graphics, float p_281275_, int p_282312_, int p_282984_, CallbackInfo ci)
     {
         if (WindowOriginHandler.isButtonVisible())
         {
             int sx = (this.width - this.imageWidth) / 2;
             int sy = (this.height - this.imageHeight) / 2;
-            graphics.blit(EXPANSION_LOCATION, sx, sy + 160, 0, 0.0F, 0.0F, 99, 30, 128, 128);
+            graphics.blit(RenderPipelines.GUI_TEXTURED, EXPANSION_LOCATION, sx, sy + 160, 0F, 0F, 99, 30, 128, 128);
             if (this.firstRender)
             {
                 this.addRenderableWidget(new BuggerOffButton(sx + 4, sy + 160 + 3, this));
