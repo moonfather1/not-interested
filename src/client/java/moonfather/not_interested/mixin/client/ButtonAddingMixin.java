@@ -13,6 +13,7 @@ import net.minecraft.screen.MerchantScreenHandler;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -33,26 +34,24 @@ public abstract class ButtonAddingMixin extends HandledScreen<MerchantScreenHand
             context.drawTexture(RenderPipelines.GUI_TEXTURED, EXPANSION_LOCATION, sx, sy + 160, 0.0F, 0.0F, 99, 30, 128, 128);
             if (this.firstRender)
             {
-                this.addDrawableChild(new BuggerOffButton(sx + 4, sy + 160 + 3, this));
+                this.addDrawableChild(new BuggerOffButton(sx + 5, sy + 160 + 3, this));
                 this.firstRender = false;
             }
         }
     }
 
-    private static final Identifier EXPANSION_LOCATION = Identifier.of("not_interested", "textures/gui/frame1.png");
+    private static final Identifier EXPANSION_LOCATION = Identifier.of("not_interested", "textures/gui/frame1b.png");
+    // as of 1.20.5, server2client message comes AFTER init() and we can't check WindowOriginMessageHandler.isButtonVisible() here.
 
-
+    @Unique
     private boolean firstRender = true; // instead of mixin in init() which won't work since 1.20.5, we use this flag.
 
-//    @Inject(method = "init()V", at = @At("TAIL"))
-//    private void addButton(CallbackInfo ci)
-//    {
-//        // as of 1.20.5, server2client message comes AFTER init() and we can't check WindowOriginMessageHandler.isButtonVisible() here.
-//        if (WindowOriginMessageHandler.isButtonVisible())
-//        {
-//        int sx = (this.width - this.backgroundWidth) / 2;
-//        int sy = (this.height - this.backgroundHeight) / 2;
-//        this.addDrawableChild(new BuggerOffButton(sx + 4 -20, sy + 160 + 3 -0, this));
-//        }
-//    }
+
+
+    @Inject(method = "init()V", at = @At("TAIL"))
+    private void addButton(CallbackInfo ci)
+    {
+        // as of 1.20.5, server2client message comes AFTER init() and we can't check WindowOriginMessageHandler.isButtonVisible() here.
+        firstRender = true; // this takes care of resizing while trade window is open. not a big deal
+    }
 }
