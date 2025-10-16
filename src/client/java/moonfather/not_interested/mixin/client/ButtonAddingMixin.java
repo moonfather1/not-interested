@@ -49,9 +49,9 @@ public abstract class ButtonAddingMixin extends HandledScreen<MerchantScreenHand
 
 
     @Inject(method = "init()V", at = @At("TAIL"))
-    private void addButton(CallbackInfo ci)
+    private void postInit(CallbackInfo ci)
     {
         // as of 1.20.5, server2client message comes AFTER init() and we can't check WindowOriginMessageHandler.isButtonVisible() here.
-        firstRender = true; // this takes care of resizing while trade window is open. not a big deal
+        this.firstRender = true; // this takes care of resizing while trade window is open. not a big deal
     }
 }
