@@ -4,13 +4,13 @@ import moonfather.not_interested.ModNotInterested;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.NotNull;
 
 /// server to client message. value carried is 1 if we clicked a WT and 0 if it's some other window.
 public record WindowOriginMessage(int flag) implements CustomPacketPayload
 {
-    private static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(ModNotInterested.MODID, "message_trader_type");
+    private static final Identifier ID = Identifier.fromNamespaceAndPath(ModNotInterested.MODID, "message_trader_type");
     public static final Type<WindowOriginMessage> TYPE = new Type<>(ID);
 
 

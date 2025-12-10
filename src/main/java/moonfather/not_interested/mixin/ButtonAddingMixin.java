@@ -7,12 +7,11 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.MerchantScreen;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.MerchantMenu;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -40,7 +39,9 @@ public abstract class ButtonAddingMixin extends AbstractContainerScreen<Merchant
             }
         }
     }
-    private static final ResourceLocation EXPANSION_LOCATION = ResourceLocation.fromNamespaceAndPath("not_interested", "textures/gui/frame1b.png");
+    @Unique
+    private static final Identifier EXPANSION_LOCATION = Identifier.fromNamespaceAndPath("not_interested", "textures/gui/frame1b.png");
+    @Unique
     private boolean firstRender = true; // instead of mixin in init() which won't work since 1.20.5, we use this flag and add button on first render.
 
 

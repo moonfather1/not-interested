@@ -3,7 +3,7 @@ package moonfather.not_interested;
 import moonfather.not_interested.messaging.server_to_client.ServerToClientSender;
 import moonfather.not_interested.mixin.MenuAccessor;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.npc.WanderingTrader;
+import net.minecraft.world.entity.npc.wanderingtrader.WanderingTrader;
 import net.minecraft.world.inventory.MerchantMenu;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;

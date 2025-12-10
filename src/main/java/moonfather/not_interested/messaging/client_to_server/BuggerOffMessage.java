@@ -1,20 +1,17 @@
 package moonfather.not_interested.messaging.client_to_server;
 
 import moonfather.not_interested.ModNotInterested;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Optional;
 
 // client-to-server message. payload is unused. just tells us that the button was clicked.
 // handler knows which server player corresponds to sender, it's all we need.
 public record BuggerOffMessage(int unused) implements CustomPacketPayload
 {
-    private static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath(ModNotInterested.MODID, "message_button_pressed");
+    private static final Identifier ID = Identifier.fromNamespaceAndPath(ModNotInterested.MODID, "message_button_pressed");
     public static final Type<BuggerOffMessage> TYPE = new Type<>(ID);
 
 

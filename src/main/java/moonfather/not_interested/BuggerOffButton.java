@@ -5,10 +5,8 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.inventory.MerchantMenu;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 
-public class BuggerOffButton extends Button
+public class BuggerOffButton extends Button.Plain
 {
     public BuggerOffButton(int left, int top, AbstractContainerScreen<MerchantMenu> parent)
     {
