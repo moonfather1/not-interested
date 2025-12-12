@@ -1,20 +1,19 @@
 package moonfather.not_interested;
 
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.ingame.HandledScreen;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.screen.MerchantScreenHandler;
-import net.minecraft.text.Text;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.inventory.MerchantMenu;
 
-public class BuggerOffButton extends ButtonWidget
+public class BuggerOffButton extends Button.Plain
 {
-    public BuggerOffButton(int left, int top, HandledScreen<MerchantScreenHandler> parent)
+    public BuggerOffButton(int left, int top, AbstractContainerScreen<MerchantMenu> parent)
     {
-        super(left, top, 88, 20, Text.translatable("message.not_interested.caption"), BuggerOffButton::handleClick, DEFAULT_NARRATION_SUPPLIER);
+        super(left, top, 88, 20, Component.translatable("message.not_interested.caption"), BuggerOffButton::handleClick, DEFAULT_NARRATION);
         //this.parent = parent;
     }
 
-    private static void handleClick(ButtonWidget button)
+    private static void handleClick(Button button)
     {
         ClientToServerMessaging.sendButtonMessage();   // when the button is clicked, this sends an empty message to the server
     }

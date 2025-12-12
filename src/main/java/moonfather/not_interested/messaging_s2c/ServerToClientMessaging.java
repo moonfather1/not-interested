@@ -2,42 +2,39 @@ package moonfather.not_interested.messaging_s2c;
 
 import moonfather.not_interested.NotInterested;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.network.RegistryByteBuf;
-import net.minecraft.network.codec.PacketCodec;
-import net.minecraft.network.packet.CustomPayload;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.Identifier;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.Identifier;
+import net.minecraft.server.level.ServerPlayer;
 
 public class ServerToClientMessaging
 {
-    public static void sendWindowOriginMessage(ServerPlayerEntity player, boolean isWanderingTrader)
+    public static void sendWindowOriginMessage(ServerPlayer player, boolean isWanderingTrader)
     {
         S2CPayload payload = new S2CPayload(isWanderingTrader);
         ServerPlayNetworking.send(player, payload);
     }
 
 
-    private static final Identifier S2C_NI_PACKET_ID = Identifier.of(NotInterested.MODID, "packet_trader");
-    public static final CustomPayload.Id<S2CPayload> PACKET_ID = new CustomPayload.Id<>(S2C_NI_PACKET_ID);
-    public static final PacketCodec<RegistryByteBuf, S2CPayload> PACKET_CODEC = PacketCodec.of(S2CPayload::write, S2CPayload::new);
+    private static final Identifier S2C_NI_PACKET_ID = Identifier.fromNamespaceAndPath(NotInterested.MODID, "packet_trader");
+    public static final CustomPacketPayload.Type<S2CPayload> PACKET_ID = new CustomPacketPayload.Type<>(S2C_NI_PACKET_ID);
+    public static final StreamCodec<RegistryFriendlyByteBuf, S2CPayload> PACKET_CODEC = StreamCodec.of(S2CPayload::write, S2CPayload::new);
 
     //----------------
-    public static class S2CPayload implements CustomPayload
+    public static class S2CPayload implements CustomPacketPayload
     {
         // data:
         private final boolean isWanderingTrader;
         public boolean getValue() { return this.isWanderingTrader; }
         // id:
         @Override
-        public Id<? extends CustomPayload> getId() { return PACKET_ID; }
+        public Type<? extends CustomPacketPayload> type() { return PACKET_ID; }
         // read and write:
-        private S2CPayload(PacketByteBuf buf) { this(buf.readInt() == 1); }
-        private void write(PacketByteBuf buf) {
-            buf.writeInt(this.isWanderingTrader ? 1 : 0);
-        }
+        private S2CPayload(RegistryFriendlyByteBuf buf) { this(buf.readInt() == 1); }
         private S2CPayload(boolean value) {
             this.isWanderingTrader = value;
         }
+        public static void write(RegistryFriendlyByteBuf buf, S2CPayload payload)  { buf.writeInt(payload.isWanderingTrader ? 1 : 0); }
     };
 }

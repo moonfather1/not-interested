@@ -1,17 +1,15 @@
 package moonfather.not_interested.mixin.client;
 
-import com.mojang.blaze3d.pipeline.RenderPipeline;
 import moonfather.not_interested.BuggerOffButton;
 import moonfather.not_interested.WindowOriginMessageHandler;
-import net.minecraft.client.gl.RenderPipelines;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.ingame.HandledScreen;
-import net.minecraft.client.gui.screen.ingame.MerchantScreen;
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.screen.MerchantScreenHandler;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.gui.screens.inventory.MerchantScreen;
+import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.MerchantMenu;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -19,28 +17,29 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(MerchantScreen.class)
-public abstract class ButtonAddingMixin extends HandledScreen<MerchantScreenHandler>
+public abstract class ButtonAddingMixin extends AbstractContainerScreen<MerchantMenu>
 {
-    private ButtonAddingMixin(MerchantScreenHandler p_97741_, PlayerInventory p_97742_, Text p_97743_) { super(p_97741_, p_97742_, p_97743_); }
+    private ButtonAddingMixin(MerchantMenu p_97741_, Inventory inventory, Component component) { super(p_97741_, inventory, component); }
 
     //@Inject(method = "drawBackground(Lnet/minecraft/client/gui/DrawContext;FII)V", at = @At(value = "INVOKE", target = "net/minecraft/client/gui/DrawContext.drawTexture (Lnet/minecraft/util/Identifier;IIIFFIIII)V", shift = At.Shift.AFTER))
-    @Inject(method = "drawBackground(Lnet/minecraft/client/gui/DrawContext;FII)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawTexture(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/util/Identifier;IIFFIIII)V", shift = At.Shift.AFTER))
-    private void renderExpansion(DrawContext context, float delta, int mouseX, int mouseY, CallbackInfo ci)
+    @Inject(method = "renderBg(Lnet/minecraft/client/gui/GuiGraphics;FII)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blit(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/resources/Identifier;IIFFIIII)V", shift = At.Shift.AFTER))
+    private void renderExpansion(GuiGraphics graphics, float delta, int mouseX, int mouseY, CallbackInfo ci)
     {
         if (WindowOriginMessageHandler.isButtonVisible())
         {
-            int sx = (this.width - this.backgroundWidth) / 2;
-            int sy = (this.height - this.backgroundHeight) / 2;
-            context.drawTexture(RenderPipelines.GUI_TEXTURED, EXPANSION_LOCATION, sx, sy + 160, 0.0F, 0.0F, 99, 30, 128, 128);
+            int sx = (this.width - this.imageWidth) / 2;
+            int sy = (this.height - this.imageHeight) / 2;
+            graphics.blit(RenderPipelines.GUI_TEXTURED, EXPANSION_LOCATION, sx, sy + 160, 0.0F, 0.0F, 99, 30, 128, 128);
             if (this.firstRender)
             {
-                this.addDrawableChild(new BuggerOffButton(sx + 5, sy + 160 + 3, this));
+                this.addRenderableWidget(new BuggerOffButton(sx + 5, sy + 160 + 3, this));
                 this.firstRender = false;
             }
         }
     }
 
-    private static final Identifier EXPANSION_LOCATION = Identifier.of("not_interested", "textures/gui/frame1b.png");
+    @Unique
+    private static final Identifier EXPANSION_LOCATION = Identifier.fromNamespaceAndPath("not_interested", "textures/gui/frame1b.png");
     // as of 1.20.5, server2client message comes AFTER init() and we can't check WindowOriginMessageHandler.isButtonVisible() here.
 
     @Unique

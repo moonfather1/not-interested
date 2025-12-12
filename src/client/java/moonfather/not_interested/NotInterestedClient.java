@@ -1,10 +1,8 @@
 package moonfather.not_interested;
 
-import moonfather.not_interested.messaging_c2s.ClientToServerMessagingInterface;
 import moonfather.not_interested.messaging_s2c.ServerToClientMessaging;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 
 
 

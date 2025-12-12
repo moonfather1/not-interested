@@ -2,13 +2,12 @@ package moonfather.not_interested.mixin;
 
 import com.mojang.authlib.GameProfile;
 import moonfather.not_interested.messaging_s2c.ServerToClientMessaging;
-import net.minecraft.entity.passive.WanderingTraderEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.screen.MerchantScreenHandler;
-import net.minecraft.screen.NamedScreenHandlerFactory;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.npc.wanderingtrader.WanderingTrader;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.MerchantMenu;
+import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -17,32 +16,32 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.OptionalInt;
 
-@Mixin(ServerPlayerEntity.class)
-public abstract class MenuOpenAndCloseEvents extends PlayerEntity
+@Mixin(ServerPlayer.class)
+public abstract class MenuOpenAndCloseEvents extends Player
 {
-    private MenuOpenAndCloseEvents(World world, GameProfile gameProfile) { super(world, gameProfile); }
+    private MenuOpenAndCloseEvents(Level world, GameProfile gameProfile) { super(world, gameProfile); }
 
     // in this class, server-side, we react to guis being opened and closed and set the flag on client side whether we're dealing with a WT or not.
 
 
-    @Inject(method = "onHandledScreenClosed", at = @At(value = "INVOKE", target = "net/minecraft/screen/PlayerScreenHandler.copySharedSlots (Lnet/minecraft/screen/ScreenHandler;)V", shift = At.Shift.AFTER))
+    @Inject(method = "doCloseContainer", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/inventory/InventoryMenu;transferState(Lnet/minecraft/world/inventory/AbstractContainerMenu;)V", shift = At.Shift.AFTER))
     private void fireCloseContainerEvent(CallbackInfo info)
     {
-        ServerToClientMessaging.sendWindowOriginMessage((ServerPlayerEntity)(Object)this, false);  // set a flag for wandering player screen to false
+        ServerToClientMessaging.sendWindowOriginMessage((ServerPlayer)(Object)this, false);  // set a flag for wandering player screen to false
     }
 
-    @Inject(method = "openHandledScreen", at = @At(value = "INVOKE", target = "java/util/OptionalInt.of (I)Ljava/util/OptionalInt;"))
-    private void fireOpenContainerEvent(NamedScreenHandlerFactory factory, CallbackInfoReturnable<OptionalInt> cir)
+    @Inject(method = "openMenu", at = @At(value = "INVOKE", target = "java/util/OptionalInt.of (I)Ljava/util/OptionalInt;"))
+    private void fireOpenContainerEvent(MenuProvider menuProvider, CallbackInfoReturnable<OptionalInt> cir)
     {
-        if (this.currentScreenHandler instanceof MerchantScreenHandler msh)
+        if (this.containerMenu instanceof MerchantMenu mm)
         {
-            if (((MenuAccessor)msh).getTraderField() instanceof WanderingTraderEntity)
+            if (((MenuAccessor)mm).getTraderField() instanceof WanderingTrader)
             {
-                ServerToClientMessaging.sendWindowOriginMessage((ServerPlayerEntity)(Object)this, true);  // set a flag for wandering player screen to true
+                ServerToClientMessaging.sendWindowOriginMessage((ServerPlayer)(Object)this, true);  // set a flag for wandering player screen to true
                 return;
             }
         }
-        ServerToClientMessaging.sendWindowOriginMessage((ServerPlayerEntity)(Object)this, false);  // set a flag for wandering player screen to false
+        ServerToClientMessaging.sendWindowOriginMessage((ServerPlayer)(Object)this, false);  // set a flag for wandering player screen to false
     }
 
 }
