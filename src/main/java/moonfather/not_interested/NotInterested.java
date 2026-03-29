@@ -19,10 +19,10 @@ public class NotInterested implements ModInitializer
 		//LOGGER.info("Hello Fabric world!");
 
 		// register server->client message
-		PayloadTypeRegistry.playS2C().register(ServerToClientMessaging.PACKET_ID, ServerToClientMessaging.PACKET_CODEC);
+		PayloadTypeRegistry.clientboundPlay().register(ServerToClientMessaging.PACKET_ID, ServerToClientMessaging.PACKET_CODEC);
 
 		// register client->server message
-		PayloadTypeRegistry.playC2S().register(ClientToServerMessagingInterface.PACKET_ID, ClientToServerMessagingInterface.PACKET_CODEC);
+		PayloadTypeRegistry.serverboundPlay().register(ClientToServerMessagingInterface.PACKET_ID, ClientToServerMessagingInterface.PACKET_CODEC);
 		// register handler for client->server message
 		ServerPlayNetworking.registerGlobalReceiver(ClientToServerMessagingInterface.PACKET_ID, ButtonMessageHandler::handleMessage2);
 	}

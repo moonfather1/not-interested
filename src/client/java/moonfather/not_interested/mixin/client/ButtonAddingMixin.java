@@ -2,7 +2,7 @@ package moonfather.not_interested.mixin.client;
 
 import moonfather.not_interested.BuggerOffButton;
 import moonfather.not_interested.WindowOriginMessageHandler;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.MerchantScreen;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -21,9 +21,9 @@ public abstract class ButtonAddingMixin extends AbstractContainerScreen<Merchant
 {
     private ButtonAddingMixin(MerchantMenu p_97741_, Inventory inventory, Component component) { super(p_97741_, inventory, component); }
 
-    //@Inject(method = "drawBackground(Lnet/minecraft/client/gui/DrawContext;FII)V", at = @At(value = "INVOKE", target = "net/minecraft/client/gui/DrawContext.drawTexture (Lnet/minecraft/util/Identifier;IIIFFIIII)V", shift = At.Shift.AFTER))
-    @Inject(method = "renderBg(Lnet/minecraft/client/gui/GuiGraphics;FII)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blit(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/resources/Identifier;IIFFIIII)V", shift = At.Shift.AFTER))
-    private void renderExpansion(GuiGraphics graphics, float delta, int mouseX, int mouseY, CallbackInfo ci)
+    //@Inject(method = "renderBg(Lnet/minecraft/client/gui/GuiGraphics;FII)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blit(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/resources/Identifier;IIFFIIII)V", shift = At.Shift.AFTER))
+    @Inject(method = "extractBackground(Lnet/minecraft/client/gui/GuiGraphicsExtractor;IIF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;blit(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/resources/Identifier;IIFFIIII)V", shift = At.Shift.AFTER))
+    private void renderExpansion(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta, CallbackInfo ci)
     {
         if (WindowOriginMessageHandler.isButtonVisible())
         {

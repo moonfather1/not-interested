@@ -59,8 +59,8 @@ public class ButtonMessageHandler
                 if (! havePlayerTarget)
                 {
                     // single player (or others too far or too close) - have him fade away
-                    int x = wt.blockPosition().getX()+33*(wt.level().random.nextInt(3)-1); // (-1..1) * 33
-                    int z = wt.blockPosition().getZ()+33*(wt.level().random.nextInt(3)-1); // (-1..1) * 33
+                    int x = wt.blockPosition().getX()+33*(wt.level().getRandom().nextInt(3)-1); // (-1..1) * 33
+                    int z = wt.blockPosition().getZ()+33*(wt.level().getRandom().nextInt(3)-1); // (-1..1) * 33
                     int y = wt.level().getHeight(Heightmap.Types.WORLD_SURFACE, x, z);
                     target = new BlockPos(x, y, z);
                 }

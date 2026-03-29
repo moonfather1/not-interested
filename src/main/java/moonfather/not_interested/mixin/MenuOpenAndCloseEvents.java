@@ -1,20 +1,20 @@
 package moonfather.not_interested.mixin;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.mojang.authlib.GameProfile;
 import moonfather.not_interested.messaging_s2c.ServerToClientMessaging;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.npc.wanderingtrader.WanderingTrader;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MerchantMenu;
 import net.minecraft.world.level.Level;
+import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
-import java.util.OptionalInt;
 
 @Mixin(ServerPlayer.class)
 public abstract class MenuOpenAndCloseEvents extends Player
@@ -30,10 +30,16 @@ public abstract class MenuOpenAndCloseEvents extends Player
         ServerToClientMessaging.sendWindowOriginMessage((ServerPlayer)(Object)this, false);  // set a flag for wandering player screen to false
     }
 
-    @Inject(method = "openMenu", at = @At(value = "INVOKE", target = "java/util/OptionalInt.of (I)Ljava/util/OptionalInt;"))
-    private void fireOpenContainerEvent(MenuProvider menuProvider, CallbackInfoReturnable<OptionalInt> cir)
+
+
+    @WrapOperation(
+            method = "openMenu",
+            at = @At(value = "FIELD", target="containerMenu:Lnet/minecraft/world/inventory/AbstractContainerMenu;", opcode = Opcodes.PUTFIELD)
+    )
+    private void fireOpenContainerEvent2(ServerPlayer instance, AbstractContainerMenu newMenu, Operation<Void> original)
     {
-        if (this.containerMenu instanceof MerchantMenu mm)
+        original.call(instance, newMenu);
+        if (newMenu instanceof MerchantMenu mm)
         {
             if (((MenuAccessor)mm).getTraderField() instanceof WanderingTrader)
             {
@@ -43,5 +49,4 @@ public abstract class MenuOpenAndCloseEvents extends Player
         }
         ServerToClientMessaging.sendWindowOriginMessage((ServerPlayer)(Object)this, false);  // set a flag for wandering player screen to false
     }
-
 }
