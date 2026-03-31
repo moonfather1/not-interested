@@ -2,7 +2,7 @@ package moonfather.not_interested.mixin;
 
 import moonfather.not_interested.BuggerOffButton;
 import moonfather.not_interested.messaging.server_to_client.WindowOriginHandler;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.MerchantScreen;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -23,9 +23,8 @@ public abstract class ButtonAddingMixin extends AbstractContainerScreen<Merchant
 
 
 
-    //@Inject(method = "renderBg(Lnet/minecraft/client/gui/GuiGraphics;FII)V", at = @At(value = "INVOKE", target = "net/minecraft/client/gui/GuiGraphics.blit (Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/resources/ResourceLocation;IIFFIIII)V", shift = At.Shift.AFTER))
-    @Inject(method = "renderBg(Lnet/minecraft/client/gui/GuiGraphics;FII)V", at = @At(value = "RETURN"))
-    private void renderExpansion(GuiGraphics graphics, float p_281275_, int p_282312_, int p_282984_, CallbackInfo ci)
+    @Inject(method = "extractBackground(Lnet/minecraft/client/gui/GuiGraphicsExtractor;IIF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;blit(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/resources/Identifier;IIFFIIII)V", shift = At.Shift.AFTER))
+    private void renderExpansion(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float p_281275_, CallbackInfo ci)
     {
         if (WindowOriginHandler.isButtonVisible())
         {
